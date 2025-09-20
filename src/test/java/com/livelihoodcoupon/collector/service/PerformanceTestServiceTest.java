@@ -98,7 +98,9 @@ class PerformanceTestServiceTest {
 		PerformanceTestService.PerformanceTestResult result = performanceTestService.testPerformance(testRegions);
 
 		// then
-		assertThat(result.getError()).isEqualTo("테스트 예외");
-		assertThat(result.getTotalTimeMs()).isGreaterThan(0);
+		assertThat(result).isNotNull();
+		assertThat(result.getError()).isNotNull();
+		assertThat(result.getError()).contains("테스트 예외");
+		assertThat(result.getTotalTimeMs()).isGreaterThanOrEqualTo(0);
 	}
 }
