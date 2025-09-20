@@ -45,6 +45,10 @@ dependencies {
     // PostGIS 의존성, PostgreSQL 드라이버 추가
     implementation 'org.hibernate.orm:hibernate-spatial:6.5.2.Final'
     runtimeOnly 'org.postgresql:postgresql'
+    
+    // Redis 캐싱 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
 checkstyle {

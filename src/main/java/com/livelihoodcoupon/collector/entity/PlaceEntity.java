@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "place")
+@Table(name = "collector_place")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

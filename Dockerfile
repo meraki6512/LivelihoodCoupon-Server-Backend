@@ -29,4 +29,5 @@ COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # 컨테이너가 시작될 때 JAR 파일을 실행하는 명령어를 지정합니다.
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# JVM 메모리 최적화 옵션을 환경변수로 받아서 적용
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

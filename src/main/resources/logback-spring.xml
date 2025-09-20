@@ -84,6 +84,24 @@
         <appender-ref ref="APP_FILE"/>
     </root>
 
+    <!-- 중복 키 에러 로그 레벨 조정 (정상적인 현상이므로 DEBUG로 변경) -->
+    <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT_JSON"/>
+        <appender-ref ref="APP_FILE"/>
+    </logger>
+
+    <!-- Hibernate SQL 로그 레벨 조정 -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT_JSON"/>
+        <appender-ref ref="APP_FILE"/>
+    </logger>
+
+    <!-- Hibernate 통계 로그 레벨 조정 -->
+    <logger name="org.hibernate.stat" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT_JSON"/>
+        <appender-ref ref="APP_FILE"/>
+    </logger>
+
     <!-- Spring Profile에 따른 설정 (예시: application-dev.yml, application-prod.yml) -->
     <springProfile name="prod">
         <root level="INFO">

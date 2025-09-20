@@ -45,4 +45,4 @@ volumes:
 
 networks:
   livelihoodCoupon-net:
-    external: true # This network is defined in the main infra/docker-compose.yml
+    driver: bridge

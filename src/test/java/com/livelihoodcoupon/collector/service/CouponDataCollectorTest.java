@@ -30,7 +30,7 @@ import com.livelihoodcoupon.collector.vo.RegionData;
 class CouponDataCollectorTest {
 
 	@InjectMocks
-	private CouponDataCollector couponDataCollector;
+	private LegacyCouponDataCollector legacyCouponDataCollector;
 
 	@Mock
 	private KakaoApiService kakaoApiService;
@@ -84,7 +84,7 @@ class CouponDataCollectorTest {
 		when(normalMeta.getTotal_count()).thenReturn(10); // Not dense
 		when(normalResponse.getDocuments()).thenReturn(List.of(createDummyPlace()));
 
-		when(kakaoApiService.searchPlaces(eq(CouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), anyInt(),
+		when(kakaoApiService.searchPlaces(eq(LegacyCouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), anyInt(),
 			eq(1)))
 			.thenReturn(normalResponse);
 
@@ -94,7 +94,7 @@ class CouponDataCollectorTest {
 			.thenReturn(Optional.empty());
 
 		// when
-		couponDataCollector.collectForSingleRegion(testRegion);
+		legacyCouponDataCollector.collectForSingleRegion(testRegion);
 
 		// then
 		// 장소 저장이 호출되었는지 검증
@@ -122,11 +122,11 @@ class CouponDataCollectorTest {
 		when(normalMeta.getTotal_count()).thenReturn(10); // Not Dense
 
 		// 512m 반경 호출 시에는 denseResponse를 반환
-		when(kakaoApiService.searchPlaces(eq(CouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(512),
+		when(kakaoApiService.searchPlaces(eq(LegacyCouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(512),
 			eq(1)))
 			.thenReturn(denseResponse);
 		// 256m 반경 호출 시에는 normalResponse를 반환하여 추가 재귀를 방지
-		when(kakaoApiService.searchPlaces(eq(CouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(256),
+		when(kakaoApiService.searchPlaces(eq(LegacyCouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(256),
 			eq(1)))
 			.thenReturn(normalResponse);
 
@@ -136,7 +136,7 @@ class CouponDataCollectorTest {
 			.thenReturn(Optional.empty());
 
 		// when
-		couponDataCollector.collectForSingleRegion(testRegion);
+		legacyCouponDataCollector.collectForSingleRegion(testRegion);
 
 		// then
 		// 밀집 지역이므로 최상위 레벨에서는 장소 저장이 호출되지 않아야 함
@@ -172,12 +172,12 @@ class CouponDataCollectorTest {
 		when(subLevelMeta.getTotal_count()).thenReturn(5); // Not dense
 		when(subLevelMeta.is_end()).thenReturn(true); // 페이지네이션 종료
 		when(subLevelResponse.getDocuments()).thenReturn(List.of(createDummyPlace()));
-		when(kakaoApiService.searchPlaces(eq(CouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(256),
+		when(kakaoApiService.searchPlaces(eq(LegacyCouponDataCollector.DEFAULT_KEYWORD), anyDouble(), anyDouble(), eq(256),
 			eq(1)))
 			.thenReturn(subLevelResponse);
 
 		// when
-		couponDataCollector.collectForSingleRegion(testRegion);
+		legacyCouponDataCollector.collectForSingleRegion(testRegion);
 
 		// then
 		// 512m 격자에 대한 API 호출은 없어야 함
@@ -205,7 +205,7 @@ class CouponDataCollectorTest {
 			.thenReturn(Optional.of(completedGrid));
 
 		// when
-		couponDataCollector.collectForSingleRegion(testRegion);
+		legacyCouponDataCollector.collectForSingleRegion(testRegion);
 
 		// then
 		// Verify that NO API calls were made at all

@@ -1,13 +1,58 @@
 services:
+  # PostgreSQL 데이터베이스
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: livelihoodCoupon-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-livelihoodCoupon_db}
+      POSTGRES_USER: ${POSTGRES_USER:-livelihoodCoupon_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-livelihoodCoupon_password}
+      TZ: Asia/Seoul
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - livelihoodCoupon-net
+
+  # Redis 캐시
+  redis:
+    image: redis:7.4-alpine
+    container_name: livelihoodCoupon-redis
+    command: [ "sh", "-c", "exec redis-server --appendonly ${REDIS_AOF:-yes}" ]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - livelihoodCoupon-net
+
+  # 메인 애플리케이션
   collector-app:
     depends_on:
-      postgres: # mysql -> postgres로 변경
+      postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     restart: on-failure # 실패 시 재시작 옵션 추가
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: livelihood-coupon-collector-app-1
+    container_name: livelihoodCoupon-collector-app-1
     ports:
       - "8080:8080"
     environment:
@@ -15,8 +60,21 @@ services:
       - KAKAO_API_KEY=${KAKAO_API_KEY}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      # Redis 연결 정보 추가
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # JVM 메모리 최적화 옵션
+      - JAVA_OPTS=-Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+UseStringDeduplication -XX:+OptimizeStringConcat
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
     networks:
       - livelihoodCoupon-net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  livelihoodCoupon-net:
+    driver: bridge
