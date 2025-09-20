@@ -44,6 +44,19 @@ public class RegionLoader {
 		}
 	}
 
+	/**
+	 * 지역명 목록으로 RegionData 목록을 로드
+	 *
+	 * @param regionNames 지역명 목록
+	 * @return RegionData 목록
+	 */
+	public List<RegionData> loadRegionsByName(List<String> regionNames) {
+		List<RegionData> allRegions = loadRegions();
+		return allRegions.stream()
+			.filter(region -> regionNames.contains(region.getName()))
+			.collect(Collectors.toList());
+	}
+
 	private Map<String, String> loadSidoNames() throws IOException {
 		try (InputStream sidoIs = getClass().getResourceAsStream("/sido.json")) {
 			if (sidoIs == null) {

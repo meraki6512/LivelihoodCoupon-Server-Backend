@@ -1,0 +1,41 @@
+# 성능 최적화 설정
+performance:
+  # 격자 캐싱 설정
+  grid-cache:
+    enabled: true
+    ttl-hours: 1
+    max-size: 10000
+  
+  # 배치 처리 설정
+  batch-processing:
+    enabled: true
+    batch-size: 15
+    min-delay-ms: 50
+    max-delay-ms: 200
+    thread-pool-size: 20
+  
+  # 성능 모니터링 설정
+  monitoring:
+    enabled: true
+    log-interval-seconds: 30
+    memory-threshold-mb: 1000
+
+  # API 호출 설정
+  api-calls:
+    base-delay-ms: 30
+    max-retries: 5
+    retry-delay-ms: 1000
+    timeout-seconds: 30
+  
+  # 격자 분할 설정
+  grid-division:
+    initial-radius-meters: 1024
+    radius-levels: [ 1024, 512, 256, 128, 64, 32, 16, 8, 4 ]
+    dense-threshold: 45
+    max-recursion-depth: 9
+  
+  # 메모리 최적화 설정
+  memory:
+    max-place-ids-cache: 50000
+    batch-save-size: 1000
+    gc-threshold-mb: 500

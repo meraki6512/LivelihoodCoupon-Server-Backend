@@ -25,6 +25,15 @@ public class CustomApiResponse<T> {
 			.timestamp(LocalDateTime.now())
 			.build();
 	}
+	
+	// 성공 응답 (메시지 포함)
+	public static <T> CustomApiResponse<T> success(T data, String message) {
+		return CustomApiResponse.<T>builder()
+			.success(true)
+			.data(data)
+			.timestamp(LocalDateTime.now())
+			.build();
+	}
 
 	// 성공 응답 (데이터 없음)
 	public static CustomApiResponse<?> success() {
@@ -35,8 +44,8 @@ public class CustomApiResponse<T> {
 	}
 
 	// 에러 응답
-	public static CustomApiResponse<?> error(ErrorCode errorCode) {
-		return CustomApiResponse.builder()
+	public static <T> CustomApiResponse<T> error(ErrorCode errorCode) {
+		return CustomApiResponse.<T>builder()
 			.success(false)
 			.error(Error.builder()
 				.code(errorCode.getCode())
@@ -47,8 +56,8 @@ public class CustomApiResponse<T> {
 	}
 
 	// 에러 응답 (커스텀 메시지)
-	public static CustomApiResponse<?> error(ErrorCode errorCode, String message) {
-		return CustomApiResponse.builder()
+	public static <T> CustomApiResponse<T> error(ErrorCode errorCode, String message) {
+		return CustomApiResponse.<T>builder()
 			.success(false)
 			.error(Error.builder()
 				.code(errorCode.getCode())

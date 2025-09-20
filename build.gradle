@@ -53,6 +53,10 @@ dependencies {
 
     // Spring Batch 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-batch'
+    
+    // Redis 캐싱 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
 checkstyle {

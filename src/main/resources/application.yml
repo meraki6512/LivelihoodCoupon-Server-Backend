@@ -11,6 +11,21 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  # Redis 캐싱 설정
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000 # 1시간 (밀리초)
 
 # Actuator 엔드포인트 구성
 management:
@@ -24,3 +39,43 @@ management:
     distribution:
       percentiles-histogram:
         http.server.requests: true
+
+# 성능 최적화 설정
+performance:
+  grid:
+    # 격자 반경 레벨 (지수적 감소)
+    # 큰 값부터 작은 값 순으로 단계별 격자 스캔을 수행합니다
+    radius-levels: [1024, 512, 256, 128, 64, 32, 16, 8, 4]
+    # 기본 격자 반경 (미터)
+    default-radius: 1024
+    # 최소 격자 반경 (미터)
+    min-radius: 4
+  thread-pool:
+    # 통합 처리용 스레드 풀 설정
+    integrated:
+      core-size: 4
+      max-size: 8
+      queue-capacity: 100
+    # 성능 테스트용 스레드 풀 설정
+    test:
+      core-size: 2
+      max-size: 4
+      queue-capacity: 50
+  cache:
+    # 격자 캐시 설정
+    grid-cache-size: 10000
+    # 캐시 만료 시간 (초)
+    cache-expire-seconds: 3600
+  monitoring:
+    # 성능 모니터링 활성화
+    enabled: true
+    # 메트릭 수집 간격 (초)
+    metrics-interval: 30
+
+# 로깅 설정
+logging:
+  level:
+    # 중복 키 에러는 DEBUG 레벨로 제어 (성능 테스트 시 노이즈 감소)
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: WARN
+    # 성능 테스트 관련 로그는 INFO 레벨 유지
+    com.livelihoodcoupon.collector.service: INFO

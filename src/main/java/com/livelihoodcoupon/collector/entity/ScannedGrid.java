@@ -1,10 +1,14 @@
 package com.livelihoodcoupon.collector.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.livelihoodcoupon.common.entity.BaseEntity;
 
 import lombok.Builder;
@@ -14,7 +18,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ScannedGrid extends BaseEntity {
+public class ScannedGrid extends BaseEntity implements Serializable {
+
+	/**
+	 * Redis 직렬화를 위한 serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
 	private String regionName;
@@ -35,8 +44,14 @@ public class ScannedGrid extends BaseEntity {
 	private GridStatus status;
 
 	@Builder
-	public ScannedGrid(String regionName, String keyword, double gridCenterLat, double gridCenterLng, int gridRadius,
-		GridStatus status) {
+	@JsonCreator
+	public ScannedGrid(
+		@JsonProperty("regionName") String regionName,
+		@JsonProperty("keyword") String keyword,
+		@JsonProperty("gridCenterLat") double gridCenterLat,
+		@JsonProperty("gridCenterLng") double gridCenterLng,
+		@JsonProperty("gridRadius") int gridRadius,
+		@JsonProperty("status") GridStatus status) {
 		this.regionName = regionName;
 		this.keyword = keyword;
 		this.gridCenterLat = gridCenterLat;
