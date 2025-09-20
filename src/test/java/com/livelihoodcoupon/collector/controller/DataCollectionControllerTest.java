@@ -62,7 +62,7 @@ class DataCollectionControllerTest {
 		mockMvc.perform(get("/admin/collect/nationwide"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true))
-			.andExpect(jsonPath("$.message").value("Nationwide integrated data collection started successfully."));
+			.andExpect(jsonPath("$.data").value("Nationwide integrated data collection started successfully."));
 
 		verify(collector).collectForRegionsIntegrated(testRegions);
 	}
@@ -77,7 +77,7 @@ class DataCollectionControllerTest {
 		mockMvc.perform(get("/admin/collect/서울특별시 종로구"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true))
-			.andExpect(jsonPath("$.message").value("Integrated data collection for '서울특별시 종로구' started successfully."));
+			.andExpect(jsonPath("$.data").value("Integrated data collection for '서울특별시 종로구' started successfully."));
 
 		verify(collector).collectForSingleRegionIntegrated(any(RegionData.class));
 	}
@@ -92,7 +92,7 @@ class DataCollectionControllerTest {
 		mockMvc.perform(get("/admin/collect/존재하지않는지역"))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$.success").value(false))
-			.andExpect(jsonPath("$.message").value("Region '존재하지않는지역' not found."));
+			.andExpect(jsonPath("$.error.message").value("Region '존재하지않는지역' not found."));
 	}
 
 	@Test
@@ -110,7 +110,7 @@ class DataCollectionControllerTest {
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true))
-			.andExpect(jsonPath("$.message").value("지역명 기반 데이터 수집이 완료되었습니다. 처리된 지역: 1개"));
+			.andExpect(jsonPath("$.data").value("지역명 기반 데이터 수집이 완료되었습니다. 처리된 지역: 1개"));
 
 		verify(collector).collectForRegionsIntegrated(anyList());
 	}
@@ -130,6 +130,6 @@ class DataCollectionControllerTest {
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$.success").value(false))
-			.andExpect(jsonPath("$.message").value("요청된 지역명과 일치하는 지역을 찾을 수 없습니다."));
+			.andExpect(jsonPath("$.error.message").value("요청된 지역명과 일치하는 지역을 찾을 수 없습니다."));
 	}
 }
