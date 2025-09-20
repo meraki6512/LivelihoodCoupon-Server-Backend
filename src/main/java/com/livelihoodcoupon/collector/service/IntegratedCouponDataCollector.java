@@ -182,15 +182,14 @@ public class IntegratedCouponDataCollector {
 		log.info("========== [{}] 통합 최적화 데이터 수집 완료 ==========", region.getName());
 		log.info("총 소요 시간: {}ms ({:.2f}초)", totalTime, totalTime / 1000.0);
 		log.info("수집된 장소 수: {}개", foundPlaceIds.size());
-		
+
 		// 중복 키 에러 통계 출력
 		int duplicateErrors = duplicateKeyErrorCount.get();
 		if (duplicateErrors > 0) {
 			log.info("중복 데이터 통계: 총 {}회 발생 (성능 테스트 중 정상적인 현상)", duplicateErrors);
 		}
-		
+
 		performanceMonitor.printPerformanceStats();
-		
 		// 7. 메모리 정리 (장시간 작업 후 GC 실행)
 		log.info("메모리 정리 중...");
 		memoryManagementService.runGarbageCollection();

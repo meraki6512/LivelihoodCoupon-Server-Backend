@@ -13,7 +13,7 @@ import lombok.Data;
 /**
  * 성능 최적화 관련 설정 클래스
  *
- * <p>application.yml의 performance 설정을 바인딩하고, 
+ * <p>application.yml의 performance 설정을 바인딩하고,
  * 스레드 풀과 관련된 빈들을 구성합니다.</p>
  *
  * @author livelihoodCoupon

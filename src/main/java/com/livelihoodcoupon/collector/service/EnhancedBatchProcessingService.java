@@ -70,6 +70,7 @@ public class EnhancedBatchProcessingService {
 		}
 		log.info("EnhancedBatchProcessingService 스레드 풀 종료 완료");
 	}
+
 	/** 배치 크기 (한 번에 처리할 격자 수) - 동적 조정 가능 */
 	private volatile int batchSize = 15;
 	/** 현재 배치 지연 시간 (적응형 조정) */

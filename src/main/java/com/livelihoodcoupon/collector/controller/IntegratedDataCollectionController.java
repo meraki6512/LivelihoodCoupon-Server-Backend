@@ -53,8 +53,7 @@ public class IntegratedDataCollectionController {
 	 *
 	 * [
 	 *   {
-	 *     "name": "구례군",
-	 *     "polygon": [[127.1, 35.1], [127.2, 35.1], [127.2, 35.2], [127.1, 35.2], [127.1, 35.1]]
+	 *     "name": "전라남도 구례군"
 	 *   }
 	 * ]
 	 * </pre>
@@ -85,8 +84,7 @@ public class IntegratedDataCollectionController {
 	 * Content-Type: application/json
 	 *
 	 * {
-	 *   "name": "구례군",
-	 *   "polygon": [[127.1, 35.1], [127.2, 35.1], [127.2, 35.2], [127.1, 35.2], [127.1, 35.1]]
+	 *   "name": "전라남도 구례군"
 	 * }
 	 * </pre>
 	 *

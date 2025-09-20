@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.livelihoodcoupon.place.repository.PlaceRepository;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

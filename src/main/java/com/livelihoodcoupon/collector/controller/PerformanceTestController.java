@@ -156,9 +156,9 @@ public class PerformanceTestController {
 
 		try {
 			// 입력 검증
-			if ((request.getSmallRegions() == null || request.getSmallRegions().isEmpty()) &&
-				(request.getMediumRegions() == null || request.getMediumRegions().isEmpty()) &&
-				(request.getLargeRegions() == null || request.getLargeRegions().isEmpty())) {
+			if ((request.getSmallRegions() == null || request.getSmallRegions().isEmpty()) && (
+				request.getMediumRegions() == null || request.getMediumRegions().isEmpty()) && (
+				request.getLargeRegions() == null || request.getLargeRegions().isEmpty())) {
 				throw new BusinessException(ErrorCode.COMMON_BAD_REQUEST, "테스트할 지역이 하나도 없습니다.");
 			}
 

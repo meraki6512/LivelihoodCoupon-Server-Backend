@@ -25,7 +25,7 @@ public class CustomApiResponse<T> {
 			.timestamp(LocalDateTime.now())
 			.build();
 	}
-	
+
 	// 성공 응답 (메시지 포함)
 	public static <T> CustomApiResponse<T> success(T data, String message) {
 		return CustomApiResponse.<T>builder()
